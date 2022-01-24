@@ -41,6 +41,7 @@ class _ImageViewState extends State<ImageView> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () {
+                    Navigator.pop(context);
                     setWallpaper();
                   },
                   child: Stack(

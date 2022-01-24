@@ -22,6 +22,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<CategoriesModel> categories = [];
   List<WallpaperModel> wallpapers = [];
+  bool isLoading = false;
   int page = 1;
   TextEditingController searchController = new TextEditingController();
 
@@ -45,13 +46,22 @@ class _HomeState extends State<Home> {
         "https://api.pexels.com/v1/curated?per_page=60&page=" + page.toString();
     var response =
         await http.get(Uri.parse(url), headers: {"Authorization": apiKey});
-    {
+    if (response.statusCode == 200) {
       Map<String, dynamic> jsonData = jsonDecode(response.body);
       jsonData["photos"].forEach((element) {
         final wallpaper = WallpaperModel.fromMap(element);
         wallpapers.add(wallpaper);
       });
       setState(() {});
+    } else {
+      final scaffold = ScaffoldMessenger.of(context);
+      scaffold.showSnackBar(
+        SnackBar(
+          content: const Text("No more Images"),
+          action: SnackBarAction(
+              label: 'Okay', onPressed: scaffold.hideCurrentSnackBar),
+        ),
+      );
     }
   }
 
@@ -60,6 +70,8 @@ class _HomeState extends State<Home> {
     getTrendingWallpapers();
     categories = getCategories();
     super.initState();
+    // scrollController = new ScrollController(initialScrollOffset: 5.0)
+    // ..addListener(() {});
   }
 
   @override
@@ -142,13 +154,18 @@ class _HomeState extends State<Home> {
                   loadMoreImages();
                 },
                 child: Container(
-                  height: 60,
+                  height: 30,
                   width: double.infinity,
-                  color: Colors.black,
+                  color: Colors.white,
                   child: Center(
                     child: Text(
-                      'Load More Images',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                      'Load More Images'.toUpperCase(),
+                      style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300,
+                              letterSpacing: 4)),
                     ),
                   ),
                 ),
