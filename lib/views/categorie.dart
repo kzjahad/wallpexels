@@ -94,20 +94,18 @@ class _CategorieState extends State<Categorie> {
                 height: 16,
               ),
               InkWell(
-                onTap: () {
-                  loadMoreImages(widget.categorieName);
-                },
-                child: (page < 4)
-                    ? Container(
-                        height: 30,
-                        width: double.infinity,
-                        color: Colors.white,
-                        child: Center(
-                          child: TextWidget(text: 'Load More Images')
-                        ),
-                      )
-                    : TextWidget(text: 'No More Images')
-              )
+                  onTap: () {
+                    loadMoreImages(widget.categorieName);
+                  },
+                  child: (page < 4)
+                      ? Container(
+                          height: 30,
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: Center(
+                              child: TextWidget(text: 'Load More Images')),
+                        )
+                      : TextWidget(text: 'No More Images'))
             ],
           ),
         ),
