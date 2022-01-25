@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wallpaper_hub/data/data.dart';
 import 'package:wallpaper_hub/model/categories_model.dart';
 import 'package:wallpaper_hub/model/wallpaper_model.dart';
+import 'package:wallpaper_hub/views/Text_Widget.dart';
 import 'package:wallpaper_hub/views/categorie.dart';
 import 'package:wallpaper_hub/views/search.dart';
 import 'package:wallpaper_hub/widgets/widget.dart';
@@ -52,7 +53,7 @@ class _HomeState extends State<Home> {
         final wallpaper = WallpaperModel.fromMap(element);
         wallpapers.add(wallpaper);
       });
-      setState(() {});
+      // setState(() {});
     } else {
       final scaffold = ScaffoldMessenger.of(context);
       scaffold.showSnackBar(
@@ -80,7 +81,7 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: brandName(),
+        title: BrandName(),
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
@@ -93,36 +94,7 @@ class _HomeState extends State<Home> {
                     borderRadius: BorderRadius.circular(30)),
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 margin: EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        controller: searchController,
-                        decoration: InputDecoration(
-                            hintText: "search wallpaper",
-                            hintStyle: GoogleFonts.poppins(
-                              textStyle: TextStyle(),
-                            ),
-                            border: InputBorder.none),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Search(
-                              searchQuery: searchController.text,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        child: Icon(Icons.search),
-                      ),
-                    )
-                  ],
-                ),
+                child: SearchBar(controller: searchController),
               ),
               SizedBox(
                 height: 16,
@@ -145,31 +117,25 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 16,
               ),
-              wallpapersList(wallpapers, context),
+              // wallpapersList(wallpapers, context),
+              WallpaperList(wallpapers: wallpapers),
               SizedBox(
                 height: 16,
               ),
-              InkWell(
-                onTap: () {
-                  loadMoreImages();
-                },
-                child: Container(
-                  height: 30,
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Center(
-                    child: Text(
-                      'Load More Images'.toUpperCase(),
-                      style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                              letterSpacing: 4)),
-                    ),
-                  ),
-                ),
-              )
+              (page < 4)
+                  ? InkWell(
+                      onTap: () {
+                        loadMoreImages();
+                      },
+                      child: Container(
+                        height: 30,
+                        width: double.infinity,
+                        color: Colors.white,
+                        child:
+                            Center(child: TextWidget(text: 'Load More Images')),
+                      ),
+                    )
+                  : TextWidget(text: 'No More Images')
             ],
           ),
         ),
@@ -193,38 +159,78 @@ class CategoriesTile extends StatelessWidget {
         );
       },
       child: Container(
-          margin: EdgeInsets.only(right: 4),
-          child: Stack(
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  imgUrl,
-                  height: 50,
-                  width: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.black26,
-                    borderRadius: BorderRadius.circular(8)),
+        margin: EdgeInsets.only(right: 4),
+        child: Stack(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                imgUrl,
                 height: 50,
                 width: 100,
-                alignment: Alignment.center,
-                child: Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
+                fit: BoxFit.cover,
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.black26,
+                  borderRadius: BorderRadius.circular(8)),
+              height: 50,
+              width: 100,
+              alignment: Alignment.center,
+              child: Text(
+                title,
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-              )
-            ],
-          )),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  const SearchBar({Key? key, this.controller}) : super(key: key);
+  final controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+                hintText: "search wallpaper",
+                hintStyle: GoogleFonts.poppins(
+                  textStyle: TextStyle(),
+                ),
+                border: InputBorder.none),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Search(
+                  searchQuery: controller.text,
+                ),
+              ),
+            );
+          },
+          child: Container(
+            child: Icon(Icons.search),
+          ),
+        )
+      ],
     );
   }
 }

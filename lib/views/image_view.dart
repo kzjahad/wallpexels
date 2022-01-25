@@ -2,34 +2,34 @@
 
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ImageView extends StatefulWidget {
+class ImageView extends StatelessWidget {
   const ImageView({Key? key, required this.imgUrl}) : super(key: key);
   final String imgUrl;
-  // ImageView({required this.imgUrl});
-  @override
-  _ImageViewState createState() => _ImageViewState();
-}
 
-class _ImageViewState extends State<ImageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
           Hero(
-            tag: widget.imgUrl,
+            tag: imgUrl,
             child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Image.network(
-                widget.imgUrl,
+              child: CachedNetworkImage(
                 fit: BoxFit.cover,
+                imageUrl: imgUrl,
               ),
+              // Image.network(
+              //   widget.imgUrl,
+              //   fit: BoxFit.cover,
+              // ),
             ),
           ),
           Container(
@@ -122,7 +122,7 @@ class _ImageViewState extends State<ImageView> {
 
   Future<void> setWallpaper() async {
     int location = WallpaperManager.HOME_SCREEN;
-    var file = await DefaultCacheManager().getSingleFile(widget.imgUrl);
+    var file = await DefaultCacheManager().getSingleFile(imgUrl);
     bool result =
         await WallpaperManager.setWallpaperFromFile(file.path, location);
     print(result);

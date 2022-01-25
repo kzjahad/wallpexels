@@ -75,7 +75,7 @@ class _SearchState extends State<Search> {
         backgroundColor: Colors.white,
         title: Padding(
           padding: const EdgeInsets.only(right: 55),
-          child: brandName(),
+          child: BrandName(),
         ),
         automaticallyImplyLeading: true,
         leading: BackButton(
@@ -120,7 +120,7 @@ class _SearchState extends State<Search> {
               SizedBox(
                 height: 16,
               ),
-              wallpapersList(wallpapers, context),
+              WallpaperList(wallpapers: wallpapers),
               SizedBox(
                 height: 16,
               ),
@@ -136,11 +136,13 @@ class _SearchState extends State<Search> {
                     child: Text(
                       'Load More Images'.toUpperCase(),
                       style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                              letterSpacing: 4)),
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: 4,
+                        ),
+                      ),
                     ),
                   ),
                 ),

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wallpaper_hub/data/data.dart';
 import 'package:http/http.dart' as http;
 import 'package:wallpaper_hub/model/wallpaper_model.dart';
+import 'package:wallpaper_hub/views/text_widget.dart';
 import 'package:wallpaper_hub/widgets/widget.dart';
 
 class Categorie extends StatefulWidget {
@@ -48,7 +49,7 @@ class _CategorieState extends State<Categorie> {
         final wallpaper = WallpaperModel.fromMap(element);
         wallpapers.add(wallpaper);
       });
-      setState(() {});
+      // setState(() {});
     } else {
       final scaffold = ScaffoldMessenger.of(context);
       scaffold.showSnackBar(
@@ -74,7 +75,7 @@ class _CategorieState extends State<Categorie> {
         backgroundColor: Colors.white,
         title: Padding(
           padding: const EdgeInsets.only(right: 55),
-          child: brandName(),
+          child: BrandName(),
         ),
         elevation: 0.0,
         leading: BackButton(
@@ -88,7 +89,7 @@ class _CategorieState extends State<Categorie> {
               SizedBox(
                 height: 16,
               ),
-              wallpapersList(wallpapers, context),
+              WallpaperList(wallpapers: wallpapers),
               SizedBox(
                 height: 16,
               ),
@@ -96,22 +97,16 @@ class _CategorieState extends State<Categorie> {
                 onTap: () {
                   loadMoreImages(widget.categorieName);
                 },
-                child: Container(
-                  height: 30,
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Center(
-                    child: Text(
-                      'Load More Images'.toUpperCase(),
-                      style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                              letterSpacing: 4)),
-                    ),
-                  ),
-                ),
+                child: (page < 4)
+                    ? Container(
+                        height: 30,
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: Center(
+                          child: TextWidget(text: 'Load More Images')
+                        ),
+                      )
+                    : TextWidget(text: 'No More Images')
               )
             ],
           ),

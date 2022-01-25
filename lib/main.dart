@@ -1,7 +1,6 @@
 // import 'dart:js';
 
 import 'package:flutter/material.dart';
-import 'package:wallpaper_hub/views/home.dart';
 import 'package:wallpaper_hub/views/splash_screen.dart';
 
 void main() {
